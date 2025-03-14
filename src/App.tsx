@@ -3,9 +3,11 @@ import { Twitter, TrendingUp, Search, UserCircle } from 'lucide-react';
 import { TweetInput } from './components/TweetInput';
 import { Tweet } from './components/Tweet';
 import { LoginModal } from './components/LoginModal';
-import { getTweets } from './lib/db';
+import { getTweets, receivedData } from './lib/db';
 import type { Tweet as TweetType, User } from './types';
+import { onDataReceived } from './lib/p2p';
 
+// Import your peer connection function
 function App() {
   const [tweets, setTweets] = useState<TweetType[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -20,18 +22,26 @@ function App() {
 
   useEffect(() => {
     loadTweets();
-    // Check if user exists in localStorage
     const savedUser = localStorage.getItem('user');
     if (savedUser) {
-      setUser(JSON.parse(savedUser));
+      const parsedUser = JSON.parse(savedUser);
+      setUser(parsedUser);
       setShowLoginModal(false);
     }
   }, []);
+
+  onDataReceived(async (data) => {
+    const received = await receivedData(data);
+    if (received === 'OK'){
+      loadTweets();
+    }
+  });
 
   const handleLogin = (name: string) => {
     const newUser = { name };
     setUser(newUser);
     localStorage.setItem('user', JSON.stringify(newUser));
+    setShowLoginModal(false);
   };
 
   const handleLogout = () => {
@@ -101,7 +111,7 @@ function App() {
       <main className="max-w-4xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
-            <TweetInput onTweetAdded={loadTweets} />
+            <TweetInput onTweetAdded={loadTweets} user={user} />
             <div className="space-y-4">
               {filteredTweets.map((tweet) => (
                 <Tweet
@@ -122,7 +132,7 @@ function App() {
             <div className="bg-white rounded-lg shadow p-4 sticky top-24">
               <div className="flex items-center space-x-2 mb-4">
                 <TrendingUp className="text-blue-500" />
-                <h2 className="text-lg font-semibold">Trending Topics</h2>
+                <h2 className="text-lg font-semibold">Trending Tweets</h2>
               </div>
               <div className="space-y-3">
                 {['AI & Technology', 'Future of Work', 'Innovation', 'Digital Trends', 'Tech News'].map((topic) => (

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Heart, MessageCircle, Share2, Sparkles } from 'lucide-react';
+import { Heart, MessageCircle, Share2, Sparkles, UserCircle } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { updateTweet, getComments, addComment } from '../lib/db';
 import { ShareModal } from './ShareModal';
@@ -11,11 +11,12 @@ interface TweetProps {
   prompt: string;
   timestamp: number;
   likes: number;
+  user: string;
   shares: number;
   onUpdate: () => void;
 }
 
-export function Tweet({ id, content, prompt, timestamp, likes, shares, onUpdate }: TweetProps) {
+export function Tweet({ id, content, prompt, user, timestamp, likes, shares, onUpdate }: TweetProps) {
   const [isLiked, setIsLiked] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [comments, setComments] = useState<Comment[]>([]);
@@ -42,6 +43,7 @@ export function Tweet({ id, content, prompt, timestamp, likes, shares, onUpdate 
       timestamp,
       likes: isLiked ? likes - 1 : likes + 1,
       shares,
+      user,
     });
     onUpdate();
   };
@@ -57,6 +59,7 @@ export function Tweet({ id, content, prompt, timestamp, likes, shares, onUpdate 
           id,
           content,
           prompt,
+          user,
           timestamp,
           likes,
           shares: shares + 1,
@@ -96,7 +99,7 @@ export function Tweet({ id, content, prompt, timestamp, likes, shares, onUpdate 
             <span>•</span>
             <span className="text-blue-500">AI Generated</span>
             <span>•</span>
-            <span className="italic">Topic: {prompt}</span>
+            <span className="italic">Tweek: {prompt}</span>
           </div>
         </div>
       </div>
@@ -130,6 +133,13 @@ export function Tweet({ id, content, prompt, timestamp, likes, shares, onUpdate 
         >
           <Share2 size={20} />
           <span>{shares}</span>
+        </button>
+
+        <button
+          className=" disabled flex items-center space-x-2 text-gray-500 hover:text-green-500 transition-colors"
+        >
+          <UserCircle size={20} />
+          <span>{user.name || 'Unknown'}</span>
         </button>
       </div>
 

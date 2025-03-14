@@ -1,14 +1,11 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Workbox } from 'workbox-window';
 import App from './App.tsx';
+import { registerSW } from 'virtual:pwa-register';
 import './index.css';
 
 // Register Service Worker
-if ('serviceWorker' in navigator) {
-  const wb = new Workbox('/service-worker.js');
-  wb.register().catch((err) => console.error('Service worker registration failed:', err));
-}
+registerSW({ immediate: true });
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

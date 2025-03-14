@@ -10,6 +10,9 @@ export default defineConfig({
       srcDir: 'src',
       filename: 'service-worker.ts',
       registerType: 'autoUpdate',
+      injectManifest: {
+        globPatterns: ['**/*.{js,css,html,png,svg}'], // Ensure static assets are included
+      },
       manifest: {
         name: 'AI Twitter Clone',
         short_name: 'AI Twitter',
@@ -27,5 +30,8 @@ export default defineConfig({
   ],
   optimizeDeps: {
     exclude: ['lucide-react']
+  },
+  build: {
+    outDir: 'dist',
   }
 });

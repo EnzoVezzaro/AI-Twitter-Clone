@@ -9,7 +9,7 @@ precacheAndRoute(self.__WB_MANIFEST);
 // Cache the Google Fonts stylesheets with a stale-while-revalidate strategy.
 registerRoute(
   /^https:\/\/fonts\.googleapis\.com/,
-  new StaleWhileRevalidate({
+  new StaleWhileRevalidate({ 
     cacheName: 'google-fonts-stylesheets',
   })
 );

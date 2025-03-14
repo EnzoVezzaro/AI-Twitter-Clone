@@ -5,18 +5,18 @@ import { addTweet } from '../lib/db';
 
 interface TweetInputProps {
   onTweetAdded: () => void;
+  user: string;
 }
 
-export function TweetInput({ onTweetAdded }: TweetInputProps) {
+export function TweetInput({ onTweetAdded, user }: TweetInputProps) {
   const [prompt, setPrompt] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [suggestions] = useState([
-    'The future of artificial intelligence',
-    'Remote work trends',
-    'Digital transformation',
-    'Sustainable technology',
-    'Innovation in healthcare',
-  ]);
+    'AI is changing the game!',
+    'Remote work: Productivity hack or burnout trap?',
+    'The digital revolution is here! Are you ready?',
+    'Can technology save the planet?'
+  ]);    
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,6 +29,7 @@ export function TweetInput({ onTweetAdded }: TweetInputProps) {
         id: crypto.randomUUID(),
         content,
         prompt,
+        user: user,
         timestamp: Date.now(),
         likes: 0,
         shares: 0,
@@ -73,7 +74,7 @@ export function TweetInput({ onTweetAdded }: TweetInputProps) {
           <div className="border-t border-gray-100 pt-4">
             <div className="flex items-center space-x-2 mb-3">
               <Sparkles size={16} className="text-blue-500" />
-              <span className="text-sm text-gray-600">Try these topics:</span>
+              <span className="text-sm text-gray-600">Try these tweets:</span>
             </div>
             <div className="flex flex-wrap gap-2">
               {suggestions.map((suggestion) => (

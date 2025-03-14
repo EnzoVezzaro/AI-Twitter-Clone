@@ -6,9 +6,13 @@ const GROQ_API_KEY = import.meta.env.VITE_GROK_API_KEY;
 
 // Tweet generation using Groq API
 export async function generateTweet(prompt: string): Promise<string | undefined> {
-  const systemPrompt = `You are a creative AI assistant that generates engaging tweets. 
-  Create a single tweet about the following topic. Include relevant hashtags and emojis.
-  Keep it under 280 characters and make it sound natural and engaging.`;
+  const systemPrompt = `You are a creative AI assistant that enhances tweets for maximum engagement.
+  Rewrite the following tweet to make it more engaging, concise, and impactful.
+
+  Keep it under 280 characters.
+  Use relevant hashtags and emojis to boost visibility.
+  Maintain a natural and conversational tone.
+  Do not add commentary—just return the improved tweet.`;
 
   try {
     const response = await axios.post(API_URL, {
