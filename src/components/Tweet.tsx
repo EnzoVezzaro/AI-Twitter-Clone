@@ -139,7 +139,7 @@ export function Tweet({ id, content, prompt, user, timestamp, likes, shares, onU
           className=" disabled flex items-center space-x-2 text-gray-500 hover:text-green-500 transition-colors"
         >
           <UserCircle size={20} />
-          <span>{user.name || 'Unknown'}</span>
+          <span>{user?.name || 'Unknown'}</span>
         </button>
       </div>
 
